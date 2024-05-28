@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="{{ url_for('static', filename='CropperStyles.css') }}" rel="stylesheet"/>
+
+    <link href="{{ url_for('static', filename='Cropper Library/cropper.css') }}" rel="stylesheet"/>
+    <script src="{{ url_for('static', filename='Cropper Library/cropper.js') }}"></script>
+
+    <title>Image Cropper</title>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="img-container">
+        <img id="image" src="{{ uri }}">
+    </div>
+    <button id="btn-crop">Crop</button>
+    <div class="cropped-container">
+        <img src="" id="output"/>
+        <form action="/Preprocess" method="POST" id="ImageForm" enctype="multipart/form-data">
+            <input name="imageFile" id="imageFile" hidden type="file"/>
+            <div class="center">
+            <Button id="submitImage" form="ImageForm" class="btn-style" type="submit">Perfect!</Button>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+<script src="{{ url_for('static', filename='CropperScript.js') }}"></script>
+</body>
+</html>
