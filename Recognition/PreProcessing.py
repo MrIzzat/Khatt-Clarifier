@@ -2,7 +2,7 @@ import cv2 as cv
 import numpy as np
 
 from Recognition import Model
-
+from Recognition.Model import tf
 
 def intial_processing(image):
 
@@ -93,20 +93,17 @@ def dialation_segmentation(image,originalImage):
         words.append(word)
 
 
-    # Resize al the words
-
-    resized_words = [cv.resize(word, (64, 32), interpolation=cv.INTER_CUBIC) for word in words]
-
     #Binarize the Resized words
 
-    gray_words = [cv.cvtColor(word,cv.COLOR_BGR2GRAY) for word in resized_words]
+    gray_words = [cv.cvtColor(word,cv.COLOR_BGR2GRAY) for word in words]
 
     binary_words = [cv.adaptiveThreshold(word,255,cv.ADAPTIVE_THRESH_MEAN_C,cv.THRESH_BINARY_INV,17, 10) for word in gray_words]
 
     predicted_text =""
     for word in binary_words:
-        preds=  Model.predict(word)
-        prediction = ''.join(Model.decode_batch_predictions(preds))[::-1]
+        preds=  Model.predict2(word)
+        prediction = ''.join(Model.decode_batch_predictions(preds))
         predicted_text+= prediction+" "
+
 
     return predicted_text

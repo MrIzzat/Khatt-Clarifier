@@ -1,5 +1,5 @@
 import os
-
+import cv2 as cv
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import numpy as np
 from tensorflow import keras
@@ -9,6 +9,8 @@ from Recognition.LoadDataset import max_len, num_to_char
 
 model = tf.keras.Sequential()
 
+
+
 def load_model():
 
     global model
@@ -16,19 +18,65 @@ def load_model():
     print(tf.__version__)
 
     model = tf.keras.models.load_model('./ICR_Model/epochs1000.h5')
+    model = tf.keras.models.load_model('./ICR_Model/currBest_may_28_2024.h5')
     from hashlib import sha256
 
     input_ = str(model.get_weights())
     print(sha256(input_.encode('utf-8')).hexdigest())
     # model.load_weights('../ICR_Model/weights/epochs1000_2_weights')
     print(model.summary())
+def distortion_free_resize(image, img_size):
+    w, h = img_size
+    image = tf.image.resize(image, size=(h, w), preserve_aspect_ratio=True)
 
+    # Check tha amount of padding needed to be done.
+    pad_height = h - tf.shape(image)[0]
+    pad_width = w - tf.shape(image)[1]
 
-def predict(image):
+    # Only necessary if you want to do same amount of padding on both sides.
+    if pad_height % 2 != 0:
+        height = pad_height // 2
+        pad_height_top = height + 1
+        pad_height_bottom = height
+    else:
+        pad_height_top = pad_height_bottom = pad_height // 2
+
+    if pad_width % 2 != 0:
+        width = pad_width // 2
+        pad_width_left = width + 1
+        pad_width_right = width
+    else:
+        pad_width_left = pad_width_right = pad_width // 2
+
+    image = tf.pad(
+        image,
+        paddings=[
+            [pad_height_top, pad_height_bottom],
+            [pad_width_left, pad_width_right],
+            [0, 0],
+        ],
+    )
+
+    image = tf.transpose(image, perm=[1, 0, 2])
+    image = tf.image.flip_left_right(image)
+    return image
+
+def preprocess_image2(image, img_size=(64, 32)):
+    image = tf.image.decode_jpeg(image, 1)
+
+    image = distortion_free_resize(image, img_size)
+
+    image =  tf.where(image > 80, 255, 0)#Basic thresholding
+
     image = tf.cast(image, tf.float32) / 255.0
-    image = tf.transpose(image)
 
-    image = np.expand_dims(image, -1)
+    return image
+
+
+def predict2(image):
+
+    image = cv.imencode('.jpg', image)[1]
+    image = preprocess_image2(image.tobytes())
 
     preds = model.predict(np.array([image]),verbose=0)
 
@@ -42,12 +90,10 @@ def predict(image):
 
 
 def decode_batch_predictions(pred):
-    global model
-
-
+    max_len=7
     input_len = np.ones(pred.shape[0]) * pred.shape[1]
     # Use greedy search. For complex tasks, you can use beam search.
-    results = keras.backend.ctc_decode(pred, input_length=input_len, greedy=True)[0][0][
+    results = keras.backend.ctc_decode(pred, input_length=input_len, greedy=False)[0][0][
         :, :max_len
     ]
     # Iterate over the results and get back the text.
@@ -57,7 +103,6 @@ def decode_batch_predictions(pred):
         res = tf.gather(res, tf.where(tf.math.not_equal(res, -1)))
         res = tf.strings.reduce_join(num_to_char(res)).numpy().decode("UTF-8")
         output_text.append(res)
-    #print(output_text)
 
     return output_text
 
@@ -134,4 +179,4 @@ def test_model():
     getCharacterAccuracy(LoadDataset.test_ds)
 
 load_model()
-test_model()
+#test_model()
