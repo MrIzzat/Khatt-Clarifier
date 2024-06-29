@@ -1,6 +1,7 @@
 import base64
 import io
 import os
+import time
 
 i=5
 import urllib.parse
@@ -69,21 +70,16 @@ def doRecognition(imageFile):
 
     return image
 
-@app.route('/Preprocess',methods=['POST'])
-def pre_process_screen():
+@app.route('/RecognizeText',methods=['POST'])
+def recognize_text():
     if request.method=="POST":
 
         imageFile = request.files.get('imageFile', '')
 
         text = doRecognition(imageFile)
 
-        return render_template('RecognizedText.html', text=text)
 
-
-
-
-
-
+        return render_template('RecognizedText.html',text=text)
 
 
 

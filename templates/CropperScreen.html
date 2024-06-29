@@ -10,14 +10,23 @@
     <link href="{{ url_for('static', filename='Cropper Library/cropper.css') }}" rel="stylesheet"/>
     <script src="{{ url_for('static', filename='Cropper Library/cropper.js') }}"></script>
 
-  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='Logo.ico') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='Logo.ico') }}">
 
     <title>Image Cropper</title>
 </head>
-<body>
+<body class="body">
+
+<div id="loading" class="body2">
+    <h1 id="title2">Please wait while the image gets pre-processed.</h1>
+    <div class="loader"></div>
 
 
-<div class="main-container">
+</div>
+
+
+<div class="main-container" id="content">
+
+
     <h1 id="title">Crop your Image!</h1>
     <div class="img-container">
         <img id="image" src="{{ uri  }}">
@@ -25,10 +34,12 @@
     <button id="btn-crop">Crop</button>
     <div class="cropped-container">
         <img src="" id="output"/>
-        <form action="/Preprocess" method="POST" id="ImageForm" enctype="multipart/form-data">
+        <form action="/RecognizeText" method="POST" id="ImageForm" enctype="multipart/form-data">
             <input name="imageFile" id="imageFile" hidden type="file"/>
             <div class="center">
-            <Button id="submitImage" form="ImageForm" class="btn-style" type="submit">Perfect!</Button>
+                <Button id="submitImage" form="ImageForm" class="btn-style" type="submit" onclick="loading();">
+                    Perfect!
+                </Button>
             </div>
         </form>
 

@@ -59,3 +59,16 @@ function dataURItoBlob(dataURI) {
 
     return new Blob([ia], {type:mimeString});
 }
+
+function loading(){
+
+    var loading = document.getElementById('loading');
+    var content = document.getElementById('content');
+    var body = document.body;
+
+
+    body.className = "body2";
+    loading.style.display   = 'flex';
+    content.style.display = 'none';
+
+ }
