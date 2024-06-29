@@ -33,7 +33,7 @@ def distortion_free_resize(image, img_size):
     pad_height = h - tf.shape(image)[0]
     pad_width = w - tf.shape(image)[1]
 
-    # Only necessary if you want to do same amount of padding on both sides.
+    # Only necessary if you want to do same amount ofpadding on both sides.
     if pad_height % 2 != 0:
         height = pad_height // 2
         pad_height_top = height + 1

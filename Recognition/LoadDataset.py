@@ -98,7 +98,7 @@ for label in train_labels:
 
 print(characters)
 characters = {'ن', 'س', 'ة', 'ك', '.', 'ء', '،', 'ف', 'ه', 'ب', 'خ', 'ؤ', 'غ', 'ز', 'ق', 'ث', 'ح', 'ذ', 'ئ', 'آ', 'إ', 'ض', 'ش', 'م', 'ر', 'ص', 'ا', 'ٍ', ':', 'و', 'أ', 'ظ', 'ل', 'ج', 'د', 'ع', 'ط', 'ت', 'ي'}
-print(len(characters))
+print(sorted(characters))
 
 print("Maximum length: ", max_len)
 print("Vocab size: ", len(characters))

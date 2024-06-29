@@ -10,13 +10,17 @@
     <link href="{{ url_for('static', filename='Cropper Library/cropper.css') }}" rel="stylesheet"/>
     <script src="{{ url_for('static', filename='Cropper Library/cropper.js') }}"></script>
 
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='Logo.ico') }}">
+
     <title>Image Cropper</title>
 </head>
 <body>
 
+
 <div class="main-container">
+    <h1 id="title">Crop your Image!</h1>
     <div class="img-container">
-        <img id="image" src="{{ uri }}">
+        <img id="image" src="{{ uri  }}">
     </div>
     <button id="btn-crop">Crop</button>
     <div class="cropped-container">
