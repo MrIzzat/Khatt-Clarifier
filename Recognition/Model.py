@@ -1,14 +1,23 @@
 import os
 import cv2 as cv
+from keras.src.layers import StringLookup
+
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 import numpy as np
 from tensorflow import keras
 import tensorflow as tf
-from Recognition.LoadDataset import max_len, num_to_char
+
 
 
 model = tf.keras.Sequential()
 
+characters = {'ن', 'س', 'ة', 'ك', '.', 'ء', '،', 'ف', 'ه', 'ب', 'خ', 'ؤ', 'غ', 'ز', 'ق', 'ث', 'ح', 'ذ', 'ئ', 'آ', 'إ', 'ض', 'ش', 'م', 'ر', 'ص', 'ا', 'ٍ', ':', 'و', 'أ', 'ظ', 'ل', 'ج', 'د', 'ع', 'ط', 'ت', 'ي'}
+char_to_num = StringLookup(vocabulary=list(sorted(characters)), mask_token=None)
+
+# Mapping integers back to original characters.
+num_to_char = StringLookup(
+    vocabulary=char_to_num.get_vocabulary(), mask_token=None, invert=True
+)
 
 
 def load_model():
@@ -108,6 +117,8 @@ def decode_batch_predictions(pred):
 
 
 def getCharacterAccuracy(test_ds):
+    from Recognition.LoadDataset import max_len, num_to_char
+
     global model
     # for batch in test_ds.take(1):
     from Recognition.LoadDataset import max_len
