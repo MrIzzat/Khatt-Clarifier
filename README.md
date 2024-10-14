@@ -6,4 +6,4 @@ The full report can be found [here]
 
 ## Demo Video:
 
-[![Demonstration Video](https://github.com/MrIzzat/Khatt-Clarifier/blob/master/Assets%20For%20ReadME/Khatt%20Clarifier%20Demo.mp4)
+https://github.com/MrIzzat/Khatt-Clarifier/blob/master/Assets%20For%20ReadME/Khatt%20Clarifier%20Demo.mp4
