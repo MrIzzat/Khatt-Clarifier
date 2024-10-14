@@ -6,7 +6,5 @@ The full report can be found [here]
 
 ## Demo Video:
 
+https://github.com/user-attachments/assets/1b414e36-f549-4309-b9f8-3ce27eae5d70
 
-<video src="[Assets%20For%20ReadME/Khatt%20Clarifier%20Demo.mp4)" type="video/mp4" width="300" />
-
-![](Assets%20For%20ReadME/Khatt%20Clarifier%20Demo.mp4)
