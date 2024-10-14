@@ -2,7 +2,7 @@
 
 A website that uses an AI model to convert words written in handwritten arabic into printed text. It uses a CNN with a BiLSTM and CTC loss.
 
-The full report can be found [here]
+The full report can be found [here](https://github.com/MrIzzat/Khatt-Clarifier/blob/master/Assets%20For%20ReadME/report.pdf)
 
 ## Demo Video:
 
