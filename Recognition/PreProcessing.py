@@ -63,6 +63,7 @@ def dialation_segmentation(image,originalImage):
     # Store each words from top to bottom and right to left.
 
     words_list = []
+    words_per_line = []
 
     for ctr in sorted_contours_lines[::-1]:
 
@@ -75,12 +76,17 @@ def dialation_segmentation(image,originalImage):
 
         sorted_contours_words = sorted(cnt, key=lambda cntr: cv.boundingRect(cntr)[0], reverse=True)
 
+        lineNumber=0
+
         for word in sorted_contours_words:
 
             if cv.contourArea(word) < 600:  # removes noise
                 continue
             x2, y2, w2, h2 = cv.boundingRect(word)
             words_list.append([x + x2, y + y2, x + x2 + w2, y + y2 + h2])
+            lineNumber+=1
+
+        words_per_line.append(lineNumber)
 
 
 
@@ -100,10 +106,21 @@ def dialation_segmentation(image,originalImage):
     binary_words = [cv.adaptiveThreshold(word,255,cv.ADAPTIVE_THRESH_MEAN_C,cv.THRESH_BINARY_INV,17, 10) for word in gray_words]
 
     predicted_text =""
+
+    wordNumber=0
+    lineNumber=0
+
     for word in binary_words:
         preds=  Model.predict2(word)
         prediction = ''.join(Model.decode_batch_predictions(preds))
         predicted_text+= prediction+" "
+        wordNumber+=1
+
+        if wordNumber==words_per_line[lineNumber]:
+            predicted_text += "\n"
+
+            wordNumber = 0
+            lineNumber += 0
 
 
     return predicted_text

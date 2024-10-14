@@ -136,7 +136,7 @@ def getCharacterAccuracy(test_ds):
 
         input_len = np.ones(preds.shape[0]) * preds.shape[1]
         # Use greedy search. For complex tasks, you can use beam search.
-        results = keras.backend.ctc_decode(preds, input_length=input_len, greedy=True)[
+        results = keras.backend.ctc_decode(preds, input_length=input_len, greedy=False)[
                       0
                   ][0][:, :max_len]
         AllPredictions = []
